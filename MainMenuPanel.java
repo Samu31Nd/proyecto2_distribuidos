@@ -81,7 +81,7 @@ public class MainMenuPanel extends JFrame {
     noPlLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
     panel.add(noPlLabel);
 
-    SpinnerNumberModel model = new SpinnerNumberModel(1, 1, 7, 1);
+    SpinnerNumberModel model = new SpinnerNumberModel(2, 1, 7, 1);
     JSpinner numSelector = new JSpinner(model);
     numSelector.setMaximumSize(new Dimension(200, 30));
     panel.add(numSelector);
@@ -100,7 +100,7 @@ public class MainMenuPanel extends JFrame {
     formatter.setCommitsOnValidEdit(true);
 
     JFormattedTextField speedField = new JFormattedTextField(formatter);
-    speedField.setText("25");
+    speedField.setText("1");
     speedField.setMaximumSize(new Dimension(200, 30));
     panel.add(speedField);
 

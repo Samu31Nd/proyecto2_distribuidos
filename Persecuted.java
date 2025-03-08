@@ -1,6 +1,10 @@
 public class Persecuted {
   private Coord startPoint, endPoint, actualPosition;
   private double angle;
+  public double getAngle() {
+    return angle;
+  }
+
   private double speed;
   private boolean reachEnd, reached;
   public boolean isReached() {
@@ -106,7 +110,6 @@ public class Persecuted {
           System.out.println("¡Llegó al destino!");
       }
 
-      System.out.println("Posición: " + actualPosition + " | Ángulo de movimiento: " + Math.toDegrees(angle));
   }
 
   /*

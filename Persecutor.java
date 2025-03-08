@@ -2,6 +2,10 @@ public class Persecutor{
 
     private Coord reachPoint, actualPosition;
     private double angle;
+    public double getAngle() {
+        return angle;
+    }
+
     private double speed;
     private boolean reachEnd;
     private boolean failed;

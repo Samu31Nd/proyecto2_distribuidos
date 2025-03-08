@@ -18,5 +18,8 @@ El proyecto debe cumplir con los siguientes requerimientos:
 - Si después de 2 minutos no se ha alcanzado al avión perseguido, el programa termina y en modo gráfico deberá imprimir la distancia recorrida en pixeles por cada avión
 
 ### To Do:
-- [ ] Diseño elaborado de aviones.
+- [X] Diseño elaborado de aviones.
 - [X] Avion perseguido evade perseguidores. 
+- [ ] Los aviones dejan rastro.
+- [ ] Mensaje final de perder.
+- [ ] Distancia recorrida.

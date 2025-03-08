@@ -23,7 +23,7 @@ public class Coord {
     // System.out.println( )
     @Override
     public String toString() {
-      return "[" + x + "," + y + "]";
+      return "[" + (int)x + "," + (int)y + "]";
     }
 
     /*

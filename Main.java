@@ -18,7 +18,7 @@ public class Main {
    * Just lauch with some default options to debug
    */
   public static void getDefaultOptions(){
-    startSimulation(new MainMenuOptions(false, 0.02, 2, Resolution._1280x720), initialSpeed);
+    startSimulation(new MainMenuOptions(false, 2, 2, Resolution._1280x720), initialSpeed);
   }
 
   public static void getOptionsFromMenu(){
