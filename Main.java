@@ -7,6 +7,8 @@ import java.awt.event.WindowEvent;
  */
 public class Main {
 
+  public static final double initialSpeed = 0.5;
+
   public static void main(String[] args) {
     //getOptionsFromMenu();
     getDefaultOptions();
@@ -16,7 +18,7 @@ public class Main {
    * Just lauch with some default options to debug
    */
   public static void getDefaultOptions(){
-    startSimulation(new MainMenuOptions(false, 1.0, 2, Resolution._1280x720));
+    startSimulation(new MainMenuOptions(false, 0.02, 2, Resolution._1280x720), initialSpeed);
   }
 
   public static void getOptionsFromMenu(){
@@ -31,22 +33,22 @@ public class Main {
         if (options.exit) {
           return;
         }
-        startSimulation(options);
+        startSimulation(options, initialSpeed);
       }
     });
   }
 
-  static void startSimulation(MainMenuOptions options){
+  static void startSimulation(MainMenuOptions options, double initialSpeed){
     int w = options.selectedResolution.toIntArr()[0] - 76 - 30;
     int h = options.selectedResolution.toIntArr()[1] - 97 - 30;
     GUIPrincipal gui = new GUIPrincipal(
       options.selectedResolution, 
-      Persecuted.defaultPlane(w, h), 
+      Persecuted.defaultPlane(w, h, initialSpeed), 
       options.noPersecutors);
     gui.setVisible(true);
 
     for(int i = 0; i < options.noPersecutors; i++){
-      gui.board.addPersecutor(new Persecutor(Coord.getRandCoordenada(w,h), options.velocity));
+      gui.board.addPersecutor(new Persecutor(Coord.getRandCoordenada(w,h), options.velocity + initialSpeed));
     }
     
   }

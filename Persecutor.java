@@ -1,9 +1,14 @@
-public class Persecutor implements Plane {
+public class Persecutor{
 
     private Coord reachPoint, actualPosition;
     private double angle;
     private double speed;
     private boolean reachEnd;
+    private boolean failed;
+    public boolean isReachEnd() {
+        return reachEnd;
+    }
+
     public Persecutor(Coord startPoint, double speed) {
         this.actualPosition = startPoint;
         this.speed = speed;
@@ -11,15 +16,21 @@ public class Persecutor implements Plane {
         this.reachEnd = false;
     }
 
-    public void setNewReachingPoint(Coord planeCoords) {
-        this.reachPoint = planeCoords;
+    public void setNewReachingPoint(Persecuted plane) {
+        if (plane.isReachEnd()) {
+            this.failed = true;
+            return;
+        } else if (plane.isReached()) {
+            this.reachEnd = true;
+            return;
+        }
+        this.reachPoint = plane.getActualPosition();
     }
 
     private static final double TURN_RATE = 0.05;
 
-    @Override
     public void move() {
-        if (reachEnd) return;
+        if (reachEnd || failed) return;
         double desiredAngle = Math.atan2(reachPoint.y - actualPosition.y, reachPoint.x - actualPosition.x);
         // Ajustar el ángulo suavemente
         double angleDiff = desiredAngle - angle;
@@ -31,7 +42,7 @@ public class Persecutor implements Plane {
         actualPosition.y += Math.sin(angle) * speed;
 
         // Comprobar si ha llegado al destino
-        if (Math.hypot(reachPoint.x - actualPosition.x, reachPoint.y - actualPosition.y) < speed) {
+        if (Math.hypot(reachPoint.x - actualPosition.x, reachPoint.y - actualPosition.y) < 5) {
             reachEnd = true;
             actualPosition.x = reachPoint.x;
             actualPosition.y = reachPoint.y;
@@ -40,12 +51,10 @@ public class Persecutor implements Plane {
 
     }
 
-    @Override
     public Coord getActualPosition() {
         return this.actualPosition;
     }
 
-    @Override
     public Coord getEndPoint() {
         return this.reachPoint;
     }

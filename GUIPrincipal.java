@@ -79,9 +79,9 @@ class GUIPanel extends JPanel implements ActionListener {
     canvas.setColor(Color.white);
     Coord actualPos = this.persecuted.getActualPosition();
     canvas.fillRect(actualPos.getX(),actualPos.getY(),10,10);
-    this.persecuted.move();
+    this.persecuted.move(persecutors);
     for (Persecutor p : persecutors){
-      p.setNewReachingPoint(persecuted.getActualPosition());
+      p.setNewReachingPoint(persecuted);
     }
   }
 
