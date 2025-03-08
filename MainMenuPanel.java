@@ -100,7 +100,7 @@ public class MainMenuPanel extends JFrame {
     formatter.setCommitsOnValidEdit(true);
 
     JFormattedTextField speedField = new JFormattedTextField(formatter);
-    speedField.setText("2.5");
+    speedField.setText("25");
     speedField.setMaximumSize(new Dimension(200, 30));
     panel.add(speedField);
 

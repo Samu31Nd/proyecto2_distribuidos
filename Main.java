@@ -10,8 +10,8 @@ public class Main {
   public static final double initialSpeed = 0.5;
 
   public static void main(String[] args) {
-    //getOptionsFromMenu();
-    getDefaultOptions();
+    getOptionsFromMenu();
+    //getDefaultOptions();
   }
 
   /*
@@ -39,6 +39,7 @@ public class Main {
   }
 
   static void startSimulation(MainMenuOptions options, double initialSpeed){
+    options.velocity /= 100;
     int w = options.selectedResolution.toIntArr()[0] - 76 - 30;
     int h = options.selectedResolution.toIntArr()[1] - 97 - 30;
     GUIPrincipal gui = new GUIPrincipal(

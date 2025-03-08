@@ -34,9 +34,10 @@ public class Coord {
     }
 
     static Random rand = new Random();
+    static final int despBorder = 80;
     static Coord getRandCoordenada(int xBound, int yBound){
-      int x = rand.nextInt(0,xBound);
-      int y = rand.nextInt(0,yBound);
+      int x = rand.nextInt(50,xBound-50);
+      int y = rand.nextInt(50,yBound-50);
         return new Coord(x, y);
     }
 

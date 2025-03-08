@@ -24,7 +24,7 @@ public class Persecuted {
   }
 
   private static final double BASE_TURN_RATE = 0.05;
-  private static final double FAST_TURN_RATE = 0.05;
+  private static final double FAST_TURN_RATE = 0.1;
   private static final double ESCAPE_DISTANCE = 50;   //danger dist
   private static final double SAFE_DISTANCE = 300;    // p.dist > 300 del jugador? endpoint : avoid
   private static final double STOP_DISTANCE = 3;
@@ -85,8 +85,8 @@ public class Persecuted {
       // ajustar final angulo
       if (avoidingBorder) {
           finalAngle = Math.atan2(
-              0.7 * Math.sin(finalAngle) + 0.3 * Math.sin(avoidAngle),
-              0.7 * Math.cos(finalAngle) + 0.3 * Math.cos(avoidAngle)
+              0.5 * Math.sin(finalAngle) + 0.5 * Math.sin(avoidAngle),
+              0.5 * Math.cos(finalAngle) + 0.5 * Math.cos(avoidAngle)
           );
       }
       double angleDiff = finalAngle - angle;
@@ -97,7 +97,7 @@ public class Persecuted {
 
       actualPosition.x += Math.cos(angle) * speed;
       actualPosition.y += Math.sin(angle) * speed;
-      
+
       double distanceToTarget = Math.hypot(endPoint.x - actualPosition.x, endPoint.y - actualPosition.y);
       if (distanceToTarget < STOP_DISTANCE) {
           reachEnd = true;

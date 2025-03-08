@@ -19,4 +19,4 @@ El proyecto debe cumplir con los siguientes requerimientos:
 
 ### To Do:
 - [ ] Diseño elaborado de aviones.
-- [ ] Avion perseguido evade perseguidores. 
+- [X] Avion perseguido evade perseguidores. 
