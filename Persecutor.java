@@ -31,7 +31,7 @@ public class Persecutor{
         this.reachPoint = plane.getActualPosition();
     }
 
-    private static final double TURN_RATE = 0.05;
+    private static final double TURN_RATE = 0.02;
 
     public void move() {
         if (reachEnd || failed) return;

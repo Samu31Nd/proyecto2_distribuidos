@@ -39,15 +39,14 @@ public class Main {
   }
 
   static void startSimulation(MainMenuOptions options, double initialSpeed){
-    options.velocity /= 100;
     int w = options.selectedResolution.toIntArr()[0] - 76 - 30;
     int h = options.selectedResolution.toIntArr()[1] - 97 - 30;
     GUIPrincipal gui = new GUIPrincipal(
       options.selectedResolution, 
       Persecuted.defaultPlane(w, h, initialSpeed), 
-      options.noPersecutors);
-    gui.setVisible(true);
-
+      options.noPersecutors, initialSpeed);
+    gui.setVisible(true);  
+    options.velocity /= 100;
     for(int i = 0; i < options.noPersecutors; i++){
       gui.board.addPersecutor(new Persecutor(Coord.getRandCoordenada(w,h), options.velocity + initialSpeed));
     }

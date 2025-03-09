@@ -20,13 +20,13 @@ import javax.swing.Timer;
 public class GUIPrincipal extends JFrame {
   public GUIPanel board;
 
-  public GUIPrincipal(Resolution res, Persecuted plane, int noPersecutors) {
+  public GUIPrincipal(Resolution res, Persecuted plane, int noPersecutors, double speed) {
     setTitle("Persecución");
     setSize(res.toDimension());
     setLocationRelativeTo(null);
     setResizable(false);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    board = new GUIPanel(res, noPersecutors);
+    board = new GUIPanel(res, noPersecutors, speed);
     board.addPlane(plane);
     add(board);
   }
@@ -51,10 +51,17 @@ class GUIPanel extends JPanel implements ActionListener {
   Timer timer;
   Graphics2D canvas;
   Persecuted persecuted;
-  Coord[] persecutedTrace;
+  CircularBuffer<Coord> persecutedTrace;
   Persecutor[] persecutors;
-  Coord[][] persecutorsTrace;
+  CircularBuffer<Coord>[] persecutorsTrace;
   public static int WIDTH, HEIGHT;
+  private static final int NO_TRACE_DOTS = 10;
+  private static final int TIME_TO_TRACE_NEW_DOT = 40;
+  private static final int radius_trace = 10;
+
+  private static double time_played = 0;
+  private static double speed;
+
   static final Polygon planePersecuted = new Polygon(
       new int[] { 0, 10, 0, -10, 0 },
       new int[] { 10, -10, -5, -10, 10 },
@@ -64,15 +71,25 @@ class GUIPanel extends JPanel implements ActionListener {
       new int[] { 8, -8, -4, -8, 8 },
       5);
 
-  public GUIPanel(Resolution res, int noPersecutors) {
+  private final long startTime;
+
+  @SuppressWarnings("unchecked")
+  public GUIPanel(Resolution res, int noPersecutors, double velocity) {
     WIDTH = res.toIntArr()[0] - 76;
     HEIGHT = res.toIntArr()[1] - 97;
     persecutors = new Persecutor[noPersecutors];
+    speed = velocity;
+    startTime = System.currentTimeMillis();
 
     timer = new Timer(10, this);
     timer.start();
     this.setPreferredSize(res.toDimension());
     this.setFocusable(true);
+
+    this.persecutedTrace = new CircularBuffer<>(NO_TRACE_DOTS);
+    this.persecutorsTrace = new CircularBuffer[noPersecutors];
+    for(int i = 0; i < noPersecutors; i++)
+      this.persecutorsTrace[i] = new CircularBuffer<>(NO_TRACE_DOTS);
   }
 
   @Override
@@ -80,7 +97,22 @@ class GUIPanel extends JPanel implements ActionListener {
     this.repaint();
   }
 
+  private boolean isShowedEndWindow = false;
+
   public void paint(Graphics g) {
+
+    if((persecuted.isReached() || persecuted.isReachEnd()) && !isShowedEndWindow){
+      isShowedEndWindow = true;
+      new EndProgramGUI(persecuted.isReached(), false, time_played*speed);
+    }
+
+    if (System.currentTimeMillis() - startTime >= 120000 && !isShowedEndWindow) {
+      isShowedEndWindow = true;
+      new EndProgramGUI(false, true, time_played * speed); // Perdió por tiempo
+  }
+
+    if (isShowedEndWindow) return;
+
     super.paint(g);
     canvas = (Graphics2D) g;
     canvas.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -140,6 +172,8 @@ class GUIPanel extends JPanel implements ActionListener {
   }
 
   private void reDrawPlane() {
+    reDrawTracePlane();
+    time_played += speed;
     canvas.setColor(persecuted_color);
     Coord actualPos = this.persecuted.getActualPosition();
     double directionPlane = this.persecuted.getAngle() - (Math.PI / 2);
@@ -159,9 +193,25 @@ class GUIPanel extends JPanel implements ActionListener {
     }
   }
 
+  private static int counter = 0;
+  private void reDrawTracePlane(){
+    if( counter++ == TIME_TO_TRACE_NEW_DOT){
+      counter = 0;
+      persecutedTrace.add(Coord.Clone(persecuted.getActualPosition()));
+    }
+    for(int i = 0; i < persecutedTrace.size(); i++) {
+      canvas.setColor(new Color(0,0,0,(i*255)/NO_TRACE_DOTS));
+      Coord actualCoord = persecutedTrace.get(i);
+      canvas.drawOval(actualCoord.getX() - radius_trace/2, actualCoord.getY() - radius_trace/2, radius_trace, radius_trace);
+      
+    }
+  }
+
   private void reDrawPersecutors() {
-    canvas.setColor(persecutor_color);
+    int i = 0;
     for (Persecutor persecutor : persecutors) {
+      reDrawTracePersecutors(persecutor, i++);
+      canvas.setColor(persecutor_color);
       Coord actualPos = persecutor.getActualPosition();
       double directionPlane = persecutor.getAngle() - (Math.PI / 2);
 
@@ -172,6 +222,18 @@ class GUIPanel extends JPanel implements ActionListener {
       Shape transformedArrow = transform.createTransformedShape(planePersecutor);
       g2d.fill(transformedArrow);
       persecutor.move();
+    }
+  }
+
+  private void reDrawTracePersecutors(Persecutor persecutor, int i) {
+    if( counter == TIME_TO_TRACE_NEW_DOT){
+      persecutorsTrace[i].add(Coord.Clone(persecutor.getActualPosition()));
+    }
+    for(int j = 0; j < persecutorsTrace[i].size(); j++) {
+      canvas.setColor(new Color(110,33,27,(j*255)/NO_TRACE_DOTS));
+      Coord actualCoord = persecutorsTrace[i].get(j);
+      canvas.drawOval(actualCoord.getX() - radius_trace/2, actualCoord.getY() - radius_trace/2, radius_trace, radius_trace);
+      
     }
   }
 

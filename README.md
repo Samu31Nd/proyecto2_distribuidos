@@ -20,6 +20,6 @@ El proyecto debe cumplir con los siguientes requerimientos:
 ### To Do:
 - [X] Diseño elaborado de aviones.
 - [X] Avion perseguido evade perseguidores. 
-- [ ] Los aviones dejan rastro.
-- [ ] Mensaje final de perder.
-- [ ] Distancia recorrida.
+- [X] Los aviones dejan rastro.
+- [X] Mensaje final de perder.
+- [X] Distancia recorrida.

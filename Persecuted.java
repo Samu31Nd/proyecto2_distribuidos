@@ -27,11 +27,11 @@ public class Persecuted {
       this.height = h;
   }
 
-  private static final double BASE_TURN_RATE = 0.05;
-  private static final double FAST_TURN_RATE = 0.1;
+  private static final double BASE_TURN_RATE = 0.08;
+  private static final double FAST_TURN_RATE = 0.12;
   private static final double ESCAPE_DISTANCE = 50;   //danger dist
   private static final double SAFE_DISTANCE = 300;    // p.dist > 300 del jugador? endpoint : avoid
-  private static final double STOP_DISTANCE = 3;
+  private static final double STOP_DISTANCE = 8;
   private static final double BORDER_AVOIDANCE_DISTANCE = 50; // Dist evitar bordes
 
   public void move(Persecutor[] persecutors) {
@@ -59,8 +59,8 @@ public class Persecuted {
           weightEscape = 3.0; // Escape prioritario
           weightTarget = 1.0;
       } else if (distanceToEnemies < SAFE_DISTANCE) {
-          weightEscape = 0.8;
-          weightTarget = 2.0;
+          weightEscape = 1.6;//0.8;
+          weightTarget = 1.6;//2.0;
       }
 
       double avoidAngle = 0;
@@ -89,8 +89,8 @@ public class Persecuted {
       // ajustar final angulo
       if (avoidingBorder) {
           finalAngle = Math.atan2(
-              0.5 * Math.sin(finalAngle) + 0.5 * Math.sin(avoidAngle),
-              0.5 * Math.cos(finalAngle) + 0.5 * Math.cos(avoidAngle)
+              0.6 * Math.sin(finalAngle) + 0.6 * Math.sin(avoidAngle),
+              0.6 * Math.cos(finalAngle) + 0.6 * Math.cos(avoidAngle)
           );
       }
       double angleDiff = finalAngle - angle;
